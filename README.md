@@ -19,19 +19,19 @@ responde en tablet y teléfono.
 
 13 escenas de scroll con barra de navegación superior por capítulos
 (*Proyecto · Necesidad · Funcionamiento · Costos · Compromiso*) y un **Hub de respaldo**
-lateral con las tablas y documentos de detalle (ficha del proyecto, modelo de gestión,
-desglose de costos, plan de mantención y seguridad, demanda y documentos descargables).
+lateral que muestra en pantalla las tablas de detalle (ficha del proyecto, modelo de
+gestión, desglose de costos, plan de mantención y seguridad, demanda). Es una pieza de
+presentación: no descarga ni requiere ningún archivo externo.
 
 ## Estructura
 
-```
+```text
 index.html          Las 13 escenas + navegación + Hub
 styles.css          Sistema de diseño (tokens, 5 capas, responsive, impresión)
 script.js           Navegación, animaciones de scroll, desglose interactivo, Hub
 assets/
   fonts/fonts.css   Tipografías embebidas (Barlow Condensed + IBM Plex Sans)
   img/              Renders del proyecto (referenciales)
-documents/          Certificado de costos, modelo de gestión y presentación (descargables)
 ```
 
 ## Notas
@@ -41,8 +41,9 @@ documents/          Certificado de costos, modelo de gestión y presentación (d
   propios y el arriendo evitado se muestran como antecedentes complementarios, sin alterar
   el monto formal.
 - Los renders se presentan como **imágenes referenciales del proyecto**.
-- Antes de la sesión: reemplazar los archivos de `documents/` por los **PDF finales
-  firmados** y confirmar la cifra de visitantes del museo (12.061) con el Modelo de
+- Es una pieza de presentación: **no descarga ningún archivo** y no depende de recursos
+  externos.
+- Antes de la sesión: confirmar la cifra de visitantes del museo (12.061) con el Modelo de
   Gestión definitivo.
 
 ---
