@@ -1,0 +1,26 @@
+# Documentos de referencia de skills (no son parte del sitio)
+docx.md
+pptx.md
+frontend-design.md
+web-artifacts-builder.md
+canvas-design.md
+theme-factory.md
+webapp-testing.md
+algorithmic-art.md
+slack-gif-creator.md
+
+# Fuentes originales en la raíz (ya versionadas en /assets/img y /documents)
+/01.jpeg
+/02.jpeg
+/03.jpeg
+/04.jpeg
+/05.jpeg
+/06.jpeg
+/07.jpeg
+/costos_operacion.doc
+/modelo_gestion.docx
+/biblioteca.pptx
+
+# Sistema
+Thumbs.db
+.DS_Store
