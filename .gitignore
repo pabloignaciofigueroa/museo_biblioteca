@@ -21,6 +21,10 @@ slack-gif-creator.md
 /modelo_gestion.docx
 /biblioteca.pptx
 
+# Herramientas del agente / IDE (no son parte del sitio)
+.claude/
+.codex/
+
 # Sistema
 Thumbs.db
 .DS_Store
