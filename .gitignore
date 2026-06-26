@@ -21,6 +21,11 @@ slack-gif-creator.md
 /modelo_gestion.docx
 /biblioteca.pptx
 
+# Presentación de diseño: 11 MB, no pasa el push por HTTPS y la web NO la usa
+# para mostrar información (solo es un enlace de descarga del Hub). Se mantiene
+# en local; reemplazar por un PDF liviano si se quiere en el repo/Pages.
+documents/presentacion-diseno.pptx
+
 # Sistema
 Thumbs.db
 .DS_Store
