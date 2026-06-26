@@ -24,6 +24,11 @@ slack-gif-creator.md
 # Herramientas del agente / IDE (no son parte del sitio)
 .claude/
 .codex/
+.impeccable/
+
+# Contexto de diseño de impeccable (vive local, no es parte del sitio servido)
+PRODUCT.md
+DESIGN.md
 
 # Sistema
 Thumbs.db
