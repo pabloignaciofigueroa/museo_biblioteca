@@ -33,3 +33,10 @@ DESIGN.md
 # Sistema
 Thumbs.db
 .DS_Store
+
+# Video teaser (hyperframes) y proyecto — local, no se publica
+.agents/
+/teaser/
+*.mp4
+agent/
+skills-lock.json

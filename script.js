@@ -1,13 +1,28 @@
 /* =================================================================
    Museo + Biblioteca de Castro · Presentación al Concejo
-   Vanilla JS · sin dependencias · offline
+   UI + motion (GSAP + ScrollTrigger, vendorizado local · offline)
    ================================================================= */
 (function () {
   "use strict";
 
-  var REDUCE = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var $ = function (s, c) { return (c || document).querySelector(s); };
   var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
+  function fmt(n, dec) { return n.toLocaleString("es-CL", { minimumFractionDigits: dec, maximumFractionDigits: dec }); }
+
+  /* ---------------- Fondos de render aleatorios (donde no hay foto) ---------------- */
+  (function () {
+    var bgImgs = $$(".scene__bg img");
+    if (!bgImgs.length) return;
+    var pool = [1, 2, 3, 4, 5, 6, 7];
+    for (var i = pool.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = pool[i]; pool[i] = pool[j]; pool[j] = t; }
+    var prev = -1;
+    bgImgs.forEach(function (img, idx) {
+      var n = pool[idx % pool.length];
+      if (n === prev) n = pool[(idx + 3) % pool.length];
+      prev = n;
+      img.src = "assets/img/0" + n + ".jpeg";
+    });
+  })();
 
   /* ---------------- NAV: shrink + progreso ---------------- */
   var nav = $("#nav");
@@ -18,6 +33,12 @@
     var h = document.documentElement.scrollHeight - window.innerHeight;
     progress.style.width = (h > 0 ? (y / h) * 100 : 0) + "%";
   }
+  var ticking = false;
+  window.addEventListener("scroll", function () {
+    if (!ticking) { requestAnimationFrame(function () { onScrollUI(); ticking = false; }); ticking = true; }
+  }, { passive: true });
+  window.addEventListener("resize", onScrollUI);
+  onScrollUI();
 
   /* ---------------- NAV: capítulo activo ---------------- */
   var sections = $$(".scene");
@@ -54,88 +75,128 @@
     });
   }
 
-  /* ---------------- Reveal + stair-draw ---------------- */
-  // stagger por orden dentro de cada escena
-  sections.forEach(function (scene) {
-    $$("[data-reveal]", scene).forEach(function (el, i) {
-      el.style.setProperty("--d", Math.min(i * 80, 480) + "ms");
+  /* ================================================================
+     MOTION · GSAP + ScrollTrigger
+     Reveals con gsap.from()/fromTo() → contenido visible por defecto:
+     sin JS, en headless o con reduced-motion ninguna sección queda en blanco.
+     ================================================================ */
+  if (window.gsap && window.ScrollTrigger) {
+    gsap.registerPlugin(ScrollTrigger);
+    $$("[data-stair], .process__line").forEach(function (svg) {
+      var p = svg.querySelector("path"); if (p) p.setAttribute("pathLength", "1");
     });
-  });
-  $$("[data-stair], .process__line").forEach(function (svg) {
-    var p = svg.querySelector("path");
-    if (p) p.setAttribute("pathLength", "1");
-  });
 
-  if (REDUCE) {
-    $$("[data-reveal]").forEach(function (el) { el.classList.add("is-visible"); });
-    $$("[data-stair], .process__line").forEach(function (el) { el.classList.add("is-drawn"); });
+    var mm = gsap.matchMedia();
+
+    /* ----- Con movimiento ----- */
+    mm.add("(prefers-reduced-motion: no-preference)", function () {
+
+      // HERO — entrada orquestada en carga
+      var hero = gsap.timeline({ defaults: { ease: "expo.out" } });
+      hero.from("#portada .scene__media--bleed img", { autoAlpha: 0, scale: 1.14, duration: 1.8, ease: "power2.out" }, 0)
+          .from("#portada .eyebrow", { autoAlpha: 0, y: 18, duration: .8 }, 0.25)
+          .from("#portada .hero__title span", { autoAlpha: 0, yPercent: 115, duration: 1, stagger: .12 }, 0.35)
+          .from("#portada .hero__lede", { autoAlpha: 0, y: 24, duration: .9 }, 0.7)
+          .from("#portada .hero__meta li", { autoAlpha: 0, y: 14, duration: .7, stagger: .08 }, 0.85)
+          .from("#portada .scroll-cue", { autoAlpha: 0, y: -10, duration: .8 }, 1.0);
+      gsap.set("#portada .stair-mark--hero path", { strokeDasharray: 1, strokeDashoffset: 1 });
+      hero.to("#portada .stair-mark--hero path", { strokeDashoffset: 0, duration: 1.5, ease: "power2.inOut" }, 0.5);
+
+      // Reveals por sección (texto/bloques) — los con motion propio se excluyen
+      gsap.utils.toArray(".scene").forEach(function (scene) {
+        if (scene.id === "portada") return;
+        var items = scene.querySelectorAll("[data-reveal]:not(.gallery__item):not(.pillar)");
+        if (!items.length) return;
+        gsap.from(items, {
+          scrollTrigger: { trigger: scene, start: "top 78%", once: true },
+          autoAlpha: 0, y: 30, duration: .9, ease: "expo.out", stagger: .09
+        });
+      });
+
+      // Galería — wipe por clip-path
+      gsap.utils.toArray("#arquitectura .gallery__item").forEach(function (fig) {
+        gsap.fromTo(fig,
+          { clipPath: "inset(0 0 100% 0)", autoAlpha: 0, y: 14 },
+          { clipPath: "inset(0 0 0% 0)", autoAlpha: 1, y: 0, duration: 1.05, ease: "expo.out",
+            scrollTrigger: { trigger: fig, start: "top 86%", once: true } });
+      });
+
+      // Pilares — lift escalonado
+      gsap.from("#pilares .pillar", {
+        scrollTrigger: { trigger: "#pilares .pillars", start: "top 80%", once: true },
+        autoAlpha: 0, y: 34, scale: .97, duration: .85, ease: "expo.out", stagger: .1 });
+
+      // Comparación — entra desde los lados
+      gsap.from("#riesgo .compare__col--good", { scrollTrigger: { trigger: "#riesgo .compare", start: "top 78%", once: true }, autoAlpha: 0, x: -44, duration: .9, ease: "expo.out" });
+      gsap.from("#riesgo .compare__col--bad", { scrollTrigger: { trigger: "#riesgo .compare", start: "top 78%", once: true }, autoAlpha: 0, x: 44, duration: .9, ease: "expo.out" });
+
+      // Barra de desglose — cada segmento "crece"
+      gsap.from("#desglose .seg", {
+        scrollTrigger: { trigger: "#desglose .breakdown__bar", start: "top 82%", once: true },
+        scaleX: 0, transformOrigin: "left center", autoAlpha: 0, duration: .9, ease: "expo.out", stagger: .07 });
+
+      // Clímax — el número se "ensambla"
+      gsap.from("#costo .climax__num", {
+        scrollTrigger: { trigger: "#costo", start: "top 68%", once: true },
+        autoAlpha: 0, scale: 1.07, duration: .6, ease: "power2.out" });
+
+      // Trazo de escaleras (clímax, acuerdo) + línea de proceso
+      gsap.set("[data-stair]:not(.stair-mark--hero) path, .process__line path", { strokeDasharray: 1, strokeDashoffset: 1 });
+      gsap.utils.toArray("[data-stair]:not(.stair-mark--hero), .process__line").forEach(function (svg) {
+        var p = svg.querySelector("path"); if (!p) return;
+        gsap.to(p, { strokeDashoffset: 0, duration: 1.4, ease: "power2.inOut",
+          scrollTrigger: { trigger: svg, start: "top 88%", once: true } });
+      });
+
+      // Contadores (es-CL) al entrar
+      $$("[data-count]").forEach(function (el) {
+        var target = parseFloat(el.getAttribute("data-count"));
+        var dec = parseInt(el.getAttribute("data-decimals") || "0", 10);
+        if (isNaN(target)) return;
+        el.textContent = fmt(0, dec);
+        var obj = { v: 0 };
+        gsap.to(obj, {
+          v: target, duration: el.hasAttribute("data-grave") ? 1.9 : 1.25, ease: "power2.out",
+          scrollTrigger: { trigger: el, start: "top 86%", once: true },
+          onUpdate: function () { el.textContent = fmt(obj.v, dec); },
+          onComplete: function () { el.textContent = fmt(target, dec); if (el.hasAttribute("data-grave")) el.classList.add("is-settled"); }
+        });
+      });
+
+      // Parallax con scrub (masas + media a sangre; excluye el hero)
+      gsap.utils.toArray("[data-parallax]").forEach(function (el) {
+        if (el.closest("#portada")) return;
+        var f = parseFloat(el.getAttribute("data-parallax")) || 0;
+        gsap.fromTo(el, { yPercent: f * 60 }, {
+          yPercent: -(f * 60), ease: "none",
+          scrollTrigger: { trigger: el.closest(".scene") || el, start: "top bottom", end: "bottom top", scrub: true }
+        });
+      });
+    });
+
+    /* ----- Reduced-motion: cifras finales (el resto ya es visible) ----- */
+    mm.add("(prefers-reduced-motion: reduce)", function () {
+      $$("[data-count]").forEach(function (el) {
+        var target = parseFloat(el.getAttribute("data-count"));
+        var dec = parseInt(el.getAttribute("data-decimals") || "0", 10);
+        if (!isNaN(target)) el.textContent = fmt(target, dec);
+      });
+    });
+
+    // Recalcular posiciones tras cargar imágenes/fuentes
+    window.addEventListener("load", function () { ScrollTrigger.refresh(); });
+
   } else {
-    var revealObs = new IntersectionObserver(function (entries, obs) {
-      entries.forEach(function (e) {
-        if (e.isIntersecting) { e.target.classList.add("is-visible"); obs.unobserve(e.target); }
-      });
-    }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
-    $$("[data-reveal]").forEach(function (el) { revealObs.observe(el); });
-
-    var stairObs = new IntersectionObserver(function (entries, obs) {
-      entries.forEach(function (e) {
-        if (e.isIntersecting) { e.target.classList.add("is-drawn"); obs.unobserve(e.target); }
-      });
-    }, { threshold: 0.4 });
-    $$("[data-stair], .process__line").forEach(function (el) { stairObs.observe(el); });
-  }
-
-  /* ---------------- Count-up ---------------- */
-  function fmt(n, dec) {
-    return n.toLocaleString("es-CL", { minimumFractionDigits: dec, maximumFractionDigits: dec });
-  }
-  function countUp(el) {
-    var target = parseFloat(el.getAttribute("data-count"));
-    var dec = parseInt(el.getAttribute("data-decimals") || "0", 10);
-    var grave = el.hasAttribute("data-grave");
-    if (REDUCE || isNaN(target)) { el.textContent = fmt(target, dec); return; }
-    var dur = grave ? 1800 : 1100, start = null;
-    function step(ts) {
-      if (start === null) start = ts;
-      var t = Math.min((ts - start) / dur, 1);
-      var eased = 1 - Math.pow(1 - t, 3);
-      el.textContent = fmt(target * eased, dec);
-      if (t < 1) requestAnimationFrame(step);
-      else { el.textContent = fmt(target, dec); if (grave) { el.classList.add("is-settled"); } }
-    }
-    requestAnimationFrame(step);
-  }
-  var countObs = new IntersectionObserver(function (entries, obs) {
-    entries.forEach(function (e) {
-      if (e.isIntersecting) { countUp(e.target); obs.unobserve(e.target); }
-    });
-  }, { threshold: 0.6 });
-  $$("[data-count]").forEach(function (el) { countObs.observe(el); });
-
-  /* ---------------- Parallax ---------------- */
-  var parallaxEls = $$("[data-parallax]");
-  function applyParallax() {
-    if (REDUCE) return;
-    var vh = window.innerHeight;
-    parallaxEls.forEach(function (el) {
-      var f = parseFloat(el.getAttribute("data-parallax")) || 0;
-      var r = el.getBoundingClientRect();
-      var offset = (r.top + r.height / 2) - vh / 2;
-      var ty = Math.max(-48, Math.min(48, offset * -f));
-      el.style.transform = "translateY(" + ty.toFixed(1) + "px)";
+    // Sin GSAP: contenido visible; cifras finales aseguradas
+    $$("[data-count]").forEach(function (el) {
+      var target = parseFloat(el.getAttribute("data-count"));
+      var dec = parseInt(el.getAttribute("data-decimals") || "0", 10);
+      if (!isNaN(target)) el.textContent = fmt(target, dec);
     });
   }
-
-  /* ---------------- rAF scroll loop ---------------- */
-  var ticking = false;
-  function onScroll() {
-    if (!ticking) { requestAnimationFrame(function () { onScrollUI(); applyParallax(); ticking = false; }); ticking = true; }
-  }
-  window.addEventListener("scroll", onScroll, { passive: true });
-  window.addEventListener("resize", function () { onScrollUI(); applyParallax(); });
-  onScrollUI(); applyParallax();
 
   /* ---------------- Navegación por teclado entre escenas ---------------- */
+  var REDUCE = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   function currentSceneIndex() {
     var best = 0, bestDist = Infinity;
     sections.forEach(function (s, i) {
