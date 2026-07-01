@@ -232,13 +232,13 @@
 
   /* ---------------- Desglose interactivo ---------------- */
   var BD = {
-    rrhh:  { a: "M$287.539", t: "Recursos humanos", s: "67,5% del costo anual", p: "13 cargos para operar el museo y la biblioteca: dirección, atención de público, bibliotecarios, curador, especialista infantil, biblioredes y coordinaciones transversales. Financiados íntegramente con recursos municipales." },
-    vig:   { a: "M$52.252",  t: "Servicios de vigilancia", s: "12,3% del costo anual", p: "El edificio albergará usuarios, colecciones, libros, equipamiento y espacios públicos. El modelo contempla seguridad continua, CCTV 24/7 y protocolos de emergencia para usuarios y patrimonio." },
-    aseo:  { a: "M$18.717",  t: "Servicios de aseo", s: "4,4% del costo anual", p: "Limpieza externalizada de 2.835 m² de uso público intensivo, condición básica para mantener el edificio abierto y en condiciones de atención." },
-    mant:  { a: "M$14.754",  t: "Mantención", s: "3,5% del costo anual", p: "Mantención de edificaciones, mobiliario, máquinas y equipos informáticos, planificada para el clima de Chiloé (humedad, lluvia, salinidad)." },
-    calef: { a: "M$10.615",  t: "Combustible para calefacción", s: "2,5% del costo anual", p: "El clima frío y húmedo de Chiloé exige calefacción durante gran parte del año, tanto para el confort de usuarios como para el control ambiental de las colecciones." },
-    elec:  { a: "M$9.598",   t: "Electricidad", s: "2,3% del costo anual", p: "Iluminación, climatización, data center y equipamiento tecnológico del edificio en operación continua." },
-    otros: { a: "M$32.509",  t: "Otros costos de operación", s: "7,6% del costo anual", p: "Agua, internet, telefonía, publicidad, impresión, producción de eventos, menaje, materiales y demás insumos necesarios para la operación cotidiana." }
+    rrhh:  { a: "M$287.539", t: "Recursos humanos", s: "67,5% del costo anual (69,9% de la operación)", p: "13 cargos financiados íntegramente con recursos municipales para operar el museo y la biblioteca: jefaturas, curador, recepción, guías, bibliotecario, especialista infantil, biblioredes y coordinaciones de educación, difusión y administración. Cubren un déficit actual (hoy el museo funciona con 2–3 personas y la biblioteca con 6) y sostienen una apertura de 67,5 horas semanales. Es el costo habilitante del proyecto." },
+    vig:   { a: "M$52.252",  t: "Servicios de vigilancia", s: "12,3% del costo anual", p: "Segundo mayor gasto operativo. Guardias externalizados con custodia nocturna y apoyo diurno en accesos, CCTV 24/7 con cámaras infrarrojas, sensores y enlace directo a Carabineros de Castro. Resguarda colecciones arqueológicas e históricas de valor incalculable y la Sala Memoria Regional, en 4 niveles con capacidad para 473 personas (~$24.224 por m² cerrado al año)." },
+    aseo:  { a: "M$18.717",  t: "Servicios de aseo", s: "4,4% del costo anual", p: "Limpieza externalizada indexada a 2.157,1 m² cerrados de alta circulación más baños públicos, con recintos de apoyo propios (pañol de aseo y sala de basura). Condición de salubridad para una carga de hasta 473 personas durante toda la operación." },
+    mant:  { a: "M$14.754",  t: "Mantención", s: "3,5% del costo anual", p: "Edificaciones (M$7.998, el 54%): sellado, impermeabilización y limpieza de canaletas para el hormigón armado en clima salino y lluvioso. Más mobiliario especializado y museográfico (estanterías \"full space\", vitrinas, plintos) y soporte de máquinas y equipos informáticos. Preserva el valor del inmueble en el horizonte de evaluación." },
+    calef: { a: "M$10.615",  t: "Combustible para calefacción", s: "2,5% del costo anual", p: "El clima frío, húmedo y lluvioso de Chiloé exige calefacción gran parte del año, no solo por confort sino para mantener condiciones higrométricas estables que conservan papel, madera y textiles. Servido por el recinto de calefacción del área técnica de instalaciones (nivel −1)." },
+    elec:  { a: "M$9.598",   t: "Electricidad", s: "2,3% del costo anual", p: "Iluminación, climatización (UMA y aire acondicionado), Data Center y equipamiento tecnológico en operación de lunes a sábado. Junto al combustible, el gasto energético equivale a ~$9.371 por m² cerrado al año, moderado para un edificio con control ambiental de conservación." },
+    otros: { a: "M$32.509",  t: "Otros costos de operación", s: "7,6% del costo anual", p: "Agrupa cuatro bloques: difusión y eventos (M$13.831: publicidad, producción e impresión, para una cartelera de 199 actividades); menaje y materiales de oficina (M$10.361); tecnología y conectividad (M$3.544: internet, telefonía e insumos, sobre software de biblioteca ALEPH, pasarelas de pago e infopaneles); y servicios básicos y logística (M$2.373: agua, correo y fletes). Insumos necesarios para la operación cotidiana." }
   };
   var bdA = $("#bdAmount"), bdT = $("#bdTitle"), bdP = $("#bdText"), bdS = $("#bdShare");
   $$(".seg").forEach(function (seg) {
@@ -275,7 +275,7 @@
   function closeHub() {
     hub.classList.remove("is-open"); hubScrim.classList.remove("is-open");
     document.body.style.overflow = "";
-    setTimeout(function () { hub.hidden = true; hubScrim.hidden = true; }, 350);
+    setTimeout(function () { hub.hidden = true; hubScrim.hidden = true; }, 520);
     if (lastFocused && lastFocused.focus) lastFocused.focus();
   }
 

@@ -17,6 +17,7 @@
   --rojo-ink:#C53A26;        /* rojo para fondo de botón con texto blanco (≥4.5:1) */
   --gris-piedra:#5E6461;     /* gris atenuado (≥4.5:1 sobre marfil/blanco) */
   --carbon:#20282B;
+  --arena:#E8DDC9;           /* arena cálida: fondo claro alterno, distinto del marfil */
 
   --ink:var(--carbon);
   --paper:var(--marfil);
@@ -105,6 +106,7 @@ h1,h2,h3,h4{margin:0;font-family:var(--display);font-weight:700;line-height:1.1;
   padding:calc(var(--nav-h) + 4rem) 0 4rem;}
 .scene--fiordo{background:var(--azul-fiordo);color:var(--marfil);}
 .scene--marfil{background:var(--paper);color:var(--ink);}
+.scene--arena{background:var(--arena);color:var(--ink);}
 .scene--deep{background:radial-gradient(120% 100% at 50% 20%, #173744 0%, var(--azul-deep) 70%);color:var(--marfil);}
 
 .wrap{position:relative;z-index:3;width:100%;max-width:var(--maxw);margin:0 auto;padding:0 var(--pad);}
@@ -138,6 +140,8 @@ h1,h2,h3,h4{margin:0;font-family:var(--display);font-weight:700;line-height:1.1;
 .scene__bg::after{content:"";position:absolute;inset:0;}
 .scene--marfil .scene__bg img{filter:saturate(.92) contrast(.97);}
 .scene--marfil .scene__bg::after{background:linear-gradient(108deg, rgba(241,238,231,.965) 0%, rgba(241,238,231,.9) 50%, rgba(241,238,231,.8) 100%);}
+.scene--arena .scene__bg img{filter:saturate(.92) contrast(.97);}
+.scene--arena .scene__bg::after{background:linear-gradient(108deg, rgba(232,221,201,.965) 0%, rgba(232,221,201,.9) 50%, rgba(232,221,201,.8) 100%);}
 .scene--fiordo .scene__bg img,.scene--azul .scene__bg img{filter:saturate(.85) brightness(.82);}
 .scene--fiordo .scene__bg::after,.scene--azul .scene__bg::after{background:linear-gradient(108deg, rgba(24,59,73,.93) 0%, rgba(24,59,73,.85) 50%, rgba(24,59,73,.66) 100%);}
 .scene--deep .scene__bg img{filter:saturate(.8) brightness(.7);}
@@ -149,6 +153,10 @@ h1,h2,h3,h4{margin:0;font-family:var(--display);font-weight:700;line-height:1.1;
 .eyebrow{font-family:var(--display);font-weight:600;letter-spacing:.04em;
   font-size:1rem;color:var(--terracota);margin:0 0 1.1rem;}
 .scene--fiordo .eyebrow,.scene--deep .eyebrow{color:#E2A38F;}
+/* Sobre arena (#E8DDC9, más oscuro que el marfil) se refuerzan los acentos y el
+   texto atenuado para mantener contraste AA (≥4.5:1 en texto normal). */
+.scene--arena .eyebrow,.scene--arena .text-terracota{color:#9A4123;}
+.scene--arena .disclaimer,.scene--arena .pull-sub{color:#565C59;}
 .eyebrow--rojo{color:var(--rojo-ink);}
 .scene--deep .eyebrow--rojo{color:#F5836D;}
 
@@ -164,6 +172,8 @@ h1,h2,h3,h4{margin:0;font-family:var(--display);font-weight:700;line-height:1.1;
   line-height:1.32;max-width:26ch;margin:2.4rem 0 0;color:var(--ink);}
 .pull--light{color:var(--marfil);max-width:34ch;}
 .scene--fiordo .pull{color:var(--marfil);}
+.pull-sub{font-family:var(--display);font-weight:500;font-size:clamp(1rem,1.35vw,1.2rem);
+  line-height:1.5;color:var(--gris-piedra);max-width:60ch;margin:.9rem 0 0;}
 
 .disclaimer{font-size:.92rem;color:var(--gris-piedra);max-width:60ch;margin:1.6rem 0 0;
   padding-left:1rem;border-left:2px solid rgba(115,122,120,.4);}
@@ -303,6 +313,8 @@ h1,h2,h3,h4{margin:0;font-family:var(--display);font-weight:700;line-height:1.1;
 .stat{background:rgba(255,255,255,.55);border:1px solid rgba(32,40,43,.1);border-radius:var(--r);padding:1.1rem 1.2rem;}
 .stat__num{display:block;font-family:var(--display);font-weight:700;font-size:2.2rem;line-height:1;font-variant-numeric:tabular-nums;}
 .stat__label{display:block;font-size:.9rem;color:var(--gris-piedra);margin-top:.3rem;}
+.stat--wide{grid-column:1 / -1;background:rgba(24,59,73,.05);}
+.stat--wide .stat__num{color:var(--azul-fiordo);}
 
 /* =================================================================
    05 · ORGFLOW + BIGNUM
@@ -320,6 +332,7 @@ h1,h2,h3,h4{margin:0;font-family:var(--display);font-weight:700;line-height:1.1;
 .bignum{display:flex;align-items:center;gap:1.4rem;margin-top:2.2rem;}
 .bignum__n{font-family:var(--display);font-weight:700;font-size:clamp(4rem,9vw,7rem);line-height:.8;color:var(--rojo-escalera);font-variant-numeric:tabular-nums;}
 .bignum__t{margin:0;max-width:28ch;color:var(--ink);}
+.bignum__note{max-width:56ch;margin:1.3rem 0 0;color:var(--ink);line-height:1.65;}
 
 /* =================================================================
    06 · PILARES
@@ -329,7 +342,7 @@ h1,h2,h3,h4{margin:0;font-family:var(--display);font-weight:700;line-height:1.1;
   border-radius:var(--r);padding:1.4rem 1.3rem 2.6rem;color:var(--marfil);cursor:pointer;
   transition:border-color .25s,background .25s,transform .25s,box-shadow .25s;display:flex;flex-direction:column;}
 .pillar:hover{border-color:var(--rojo-escalera);background:rgba(216,70,47,.12);transform:translateY(-4px);box-shadow:0 16px 32px -14px rgba(0,0,0,.45);}
-.pillar::after{content:"→";position:absolute;right:1.25rem;bottom:1.1rem;font-family:var(--display);font-weight:700;font-size:1.4rem;color:var(--terra-lt);opacity:.55;transition:opacity .25s,transform .25s,color .25s;}
+.pillar::after{content:"→";position:absolute;right:1.25rem;bottom:1.1rem;font-family:var(--display);font-weight:700;font-size:1.4rem;color:#E2A38F;opacity:.55;transition:opacity .25s,transform .25s,color .25s;}
 .pillar:hover::after{opacity:1;transform:translateX(5px);color:#fff;}
 .pillar h3{font-size:1.4rem;margin:0 0 .7rem;line-height:1.12;}
 .pillar p{margin:0;font-size:.95rem;color:rgba(241,238,231,.78);}
@@ -443,55 +456,143 @@ h1,h2,h3,h4{margin:0;font-family:var(--display);font-weight:700;line-height:1.1;
 .accord__actions .deep-btn{margin-top:0;}
 
 /* =================================================================
-   CAPA 5 · HUB
+   CAPA 5 · HUB  ·  panel lateral de respaldo (info clave, no anexa)
+   Ocupa el 50% del ancho · aireado · lectura editorial · desktop/tablet
    ================================================================= */
-.hub-scrim{position:fixed;inset:0;z-index:150;background:rgba(14,36,45,.55);backdrop-filter:blur(2px);
-  opacity:0;transition:opacity .3s ease;}
+/* Velo · oscurece la página; el panel es lo único iluminado */
+.hub-scrim{position:fixed;inset:0;z-index:150;background:rgba(14,36,45,.58);backdrop-filter:blur(3px);
+  opacity:0;transition:opacity .4s ease;}
 .hub-scrim.is-open{opacity:1;}
-.hub{position:fixed;top:0;right:0;bottom:0;z-index:160;width:min(620px,94vw);
+
+/* Panel · 50% del ancho, con piso legible en tablet y techo en monitores anchos */
+.hub{position:fixed;top:0;right:0;bottom:0;z-index:160;width:clamp(620px,50vw,1100px);
   background:var(--marfil);color:var(--ink);box-shadow:var(--shadow);
-  display:flex;flex-direction:column;transform:translateX(100%);transition:transform .35s var(--ease);}
+  display:flex;flex-direction:column;transform:translateX(100%);
+  transition:transform .55s var(--ease);will-change:transform;}
 .hub.is-open{transform:none;}
-.hub__head{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 1.5rem;
-  background:var(--azul-fiordo);color:var(--marfil);flex:0 0 auto;}
-.hub__head h2{font-size:1.5rem;text-transform:uppercase;letter-spacing:.04em;}
-.hub__close{background:transparent;border:1px solid rgba(241,238,231,.3);color:var(--marfil);
-  width:38px;height:38px;border-radius:var(--r);font-size:1.1rem;line-height:1;transition:background .2s,border-color .2s;}
-.hub__close:hover{background:rgba(216,70,47,.2);border-color:var(--rojo-escalera);}
-.hub__search{padding:1rem 1.5rem .4rem;flex:0 0 auto;}
-.hub__search input{width:100%;padding:.7rem .9rem;border:1px solid rgba(32,40,43,.2);border-radius:var(--r);
-  font-family:var(--body);font-size:1rem;background:#fff;}
-.hub__tabs{display:flex;flex-wrap:wrap;gap:.4rem;padding:.6rem 1.5rem 1rem;flex:0 0 auto;
-  border-bottom:1px solid rgba(32,40,43,.12);}
-.hub__tab{background:transparent;border:1px solid rgba(32,40,43,.2);border-radius:20px;
-  padding:.35rem .85rem;font-family:var(--display);font-weight:600;text-transform:uppercase;letter-spacing:.04em;
-  font-size:.82rem;color:var(--gris-piedra);transition:all .2s;}
+/* Salvaguarda para ventanas muy angostas (el sitio es desktop/tablet, no móvil) */
+@media(max-width:680px){.hub{width:100%;}}
+
+/* Cabecera · el rótulo del expediente, en teal profundo */
+.hub__head{display:flex;align-items:center;justify-content:space-between;gap:1.5rem;
+  padding:1.7rem clamp(1.9rem,3vw,3.25rem);
+  background:var(--azul-fiordo);color:var(--marfil);flex:0 0 auto;
+  box-shadow:0 1px 0 rgba(14,36,45,.3);}
+.hub__head h2{font-family:var(--display);font-weight:600;
+  font-size:clamp(1.6rem,2vw,2.1rem);text-transform:uppercase;letter-spacing:.05em;line-height:1;}
+.hub__close{background:transparent;border:1px solid rgba(241,238,231,.35);color:var(--marfil);
+  width:44px;height:44px;border-radius:var(--r);font-size:1.15rem;line-height:1;flex:0 0 auto;
+  display:grid;place-items:center;cursor:pointer;
+  transition:background .2s,border-color .2s,transform .3s var(--ease);}
+.hub__close:hover{background:rgba(216,70,47,.22);border-color:var(--rojo-escalera);transform:rotate(90deg);}
+.hub__close:focus-visible{outline:2px solid var(--marfil);outline-offset:2px;}
+
+/* Buscador · filtra las partidas dentro del expediente */
+.hub__search{padding:1.4rem clamp(1.9rem,3vw,3.25rem) .6rem;flex:0 0 auto;}
+.hub__search input{width:100%;padding:.85rem 1.1rem;border:1px solid rgba(32,40,43,.22);border-radius:var(--r);
+  font-family:var(--body);font-size:1.02rem;color:var(--ink);background:#fff;
+  transition:border-color .2s,box-shadow .2s;}
+.hub__search input::placeholder{color:var(--gris-piedra);}
+.hub__search input:focus{outline:none;border-color:var(--azul-fiordo);box-shadow:0 0 0 3px rgba(24,59,73,.14);}
+
+/* Pestañas · una sección visible a la vez; separadas del cuerpo por una línea */
+.hub__tabs{display:flex;flex-wrap:wrap;gap:.55rem;padding:.4rem clamp(1.9rem,3vw,3.25rem) 1.3rem;flex:0 0 auto;
+  border-bottom:1px solid rgba(32,40,43,.14);}
+.hub__tab{background:transparent;border:1px solid rgba(32,40,43,.22);border-radius:22px;
+  padding:.5rem 1.1rem;font-family:var(--display);font-weight:600;text-transform:uppercase;letter-spacing:.05em;
+  font-size:.9rem;color:var(--gris-piedra);cursor:pointer;
+  transition:background .2s,border-color .2s,color .2s;}
 .hub__tab:hover{border-color:var(--terracota);color:var(--terracota);}
+.hub__tab:focus-visible{outline:2px solid var(--azul-fiordo);outline-offset:2px;}
 .hub__tab.is-active{background:var(--azul-fiordo);border-color:var(--azul-fiordo);color:var(--marfil);}
-.hub__body{flex:1 1 auto;overflow-y:auto;padding:1.5rem;}
+
+/* Cuerpo · mucho aire; único elemento con scroll para la cabecera fija de tablas */
+.hub__body{flex:1 1 auto;overflow-y:auto;scroll-behavior:smooth;
+  padding:clamp(2rem,3.2vw,3.25rem) clamp(1.9rem,3vw,3.25rem) 3.5rem;}
 .hub__panel{display:none;}
-.hub__panel.is-active{display:block;animation:fadein .3s ease;}
+.hub__panel.is-active{display:block;}
+/* Despliegue escalonado: al abrir el panel (y al cambiar de pestaña, que re-dispara
+   .is-active) el contenido se revela con intención, bloque por bloque. Solo con
+   movimiento permitido; sin JS, en headless o con reduced-motion queda siempre visible. */
+@media (prefers-reduced-motion:no-preference){
+  .hub.is-open .hub__panel.is-active > *{opacity:0;animation:hubRise .5s var(--ease) both;}
+  .hub.is-open .hub__panel.is-active > :nth-child(1){animation-delay:.05s;}
+  .hub.is-open .hub__panel.is-active > :nth-child(2){animation-delay:.11s;}
+  .hub.is-open .hub__panel.is-active > :nth-child(3){animation-delay:.17s;}
+  .hub.is-open .hub__panel.is-active > :nth-child(4){animation-delay:.23s;}
+  .hub.is-open .hub__panel.is-active > :nth-child(5){animation-delay:.29s;}
+  .hub.is-open .hub__panel.is-active > :nth-child(n+6){animation-delay:.34s;}
+}
+@keyframes hubRise{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
+/* Modo búsqueda: se apilan TODAS las secciones, separadas con aire y una divisoria */
 .hub__body.is-searching .hub__panel{display:block;}
-.hub__body.is-searching .hub__panel + .hub__panel{border-top:1px solid rgba(32,40,43,.12);margin-top:1.5rem;padding-top:1.5rem;}
-@keyframes fadein{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
-.hub__panel h3{font-size:1.7rem;margin-bottom:1rem;color:var(--azul-fiordo);}
-.hub__panel h4{font-family:var(--display);font-weight:600;text-transform:uppercase;letter-spacing:.06em;
-  font-size:1rem;color:var(--terracota);margin:1.6rem 0 .6rem;}
-.hub__lead{background:rgba(24,59,73,.06);padding:.8rem 1rem;border-radius:var(--r);margin-bottom:1rem;}
-.hub__list{padding-left:1.1rem;margin:.4rem 0;}
-.hub__list li{margin:.35rem 0;}
-.hub__src{font-size:.82rem;color:var(--gris-piedra);font-style:italic;margin-top:1.2rem;}
+.hub__body.is-searching .hub__panel + .hub__panel{border-top:1px solid rgba(32,40,43,.14);
+  margin-top:3rem;padding-top:3rem;}
+.hub__body.is-searching tr[hidden],
+.hub__body.is-searching li[hidden],
+.hub__body.is-searching p[hidden]{display:none;}
 
-.dtable{width:100%;border-collapse:collapse;font-size:.92rem;margin:.4rem 0;font-variant-numeric:tabular-nums;}
-.dtable th,.dtable td{text-align:left;padding:.5rem .6rem;border-bottom:1px solid rgba(32,40,43,.12);vertical-align:top;}
-.dtable thead th{font-family:var(--display);text-transform:uppercase;letter-spacing:.05em;font-size:.82rem;color:var(--gris-piedra);background:rgba(24,59,73,.05);}
-.dtable td:last-child,.dtable th:last-child{text-align:right;white-space:nowrap;}
-.dtable tbody th{font-weight:600;color:var(--ink);white-space:nowrap;text-align:left;}
+/* Jerarquía · título ancho y firme, prosa en medida cómoda, datos a todo el ancho */
+.hub__panel h3{max-width:22ch;font-size:clamp(1.9rem,2.4vw,2.5rem);line-height:1.1;letter-spacing:.01em;
+  color:var(--azul-fiordo);margin:0 0 1rem;padding-bottom:.9rem;
+  border-bottom:3px solid var(--azul-fiordo);}
+.hub__panel h3 + p,.hub__panel h3 + .hub__lead{margin-top:1.4rem;}
+.hub__panel h4{font-family:var(--display);font-weight:600;text-transform:uppercase;letter-spacing:.07em;
+  font-size:1.12rem;color:var(--terracota);margin:2.8rem 0 .9rem;padding-bottom:.5rem;
+  border-bottom:2px solid rgba(168,80,46,.28);}
+/* Prosa y listas: medida editorial (~64ch), no todo el ancho del panel */
+.hub__panel p{max-width:64ch;line-height:1.7;margin:1.1rem 0;}
+.hub__lead{max-width:none;background:rgba(24,59,73,.07);border:1px solid rgba(24,59,73,.16);
+  padding:1.25rem 1.5rem;border-radius:var(--r);margin:0 0 1.6rem;font-size:1.05rem;line-height:1.7;}
+.hub__lead strong{color:var(--azul-fiordo);}
+.hub__list{max-width:64ch;padding-left:1.3rem;margin:1.1rem 0;}
+.hub__list li{margin:.6rem 0;line-height:1.65;}
+.hub__src{max-width:64ch;font-size:.86rem;color:var(--gris-piedra);font-style:italic;margin-top:2.2rem;
+  padding-top:1rem;border-top:1px solid rgba(32,40,43,.12);}
+.hub__note{max-width:66ch;font-size:.92rem;line-height:1.6;color:var(--gris-piedra);margin:1.2rem 0 0;
+  padding:.9rem 1.1rem;background:rgba(24,59,73,.04);border:1px solid rgba(24,59,73,.1);border-radius:var(--r);}
+
+/* =====  TABLAS DE DATOS  ·  el corazón del expediente  =====
+   Legibilidad primero: filas aireadas, cifras tabulares y alineadas a la derecha,
+   cabecera fija clara y una fila de total que se lee como conclusión, no como dato más. */
+.dtable{width:100%;border-collapse:separate;border-spacing:0;
+  font-size:1rem;line-height:1.45;margin:1.2rem 0 2rem;font-variant-numeric:tabular-nums lining-nums;}
+.dtable th,.dtable td{text-align:left;padding:.9rem 1.1rem;
+  border-bottom:1px solid rgba(32,40,43,.12);vertical-align:top;}
+/* Cabecera fija: en tablas largas (p. ej. las 19 partidas de operación) los rótulos
+   de columna quedan siempre a la vista mientras se recorre el detalle. */
+.dtable thead th{position:sticky;top:0;z-index:3;font-family:var(--display);font-weight:600;
+  text-transform:uppercase;letter-spacing:.06em;font-size:.86rem;
+  color:var(--marfil);background:var(--azul-fiordo);border-bottom:none;
+  box-shadow:inset 0 -1px 0 rgba(14,36,45,.4),0 1px 0 rgba(14,36,45,.25);}
+.dtable thead th:first-child{border-top-left-radius:var(--r);}
+.dtable thead th:last-child{border-top-right-radius:var(--r);}
+/* Zebra sutil para seguir la fila a lo ancho del panel; hover para el escaneo activo */
+.dtable tbody tr:nth-of-type(even):not(.dtable__total) th,
+.dtable tbody tr:nth-of-type(even):not(.dtable__total) td{background:rgba(24,59,73,.035);}
+.dtable tbody tr:not(.dtable__total):hover th,
+.dtable tbody tr:not(.dtable__total):hover td{background:rgba(168,80,46,.08);}
+/* Última columna = cifra: a la derecha, sin cortes de línea, tabular */
+.dtable td:last-child,.dtable th:last-child{text-align:right;white-space:nowrap;
+  font-variant-numeric:tabular-nums lining-nums;}
+/* Tablas clave-valor (ficha): el rótulo manda, el valor respira y puede envolver */
+.dtable tbody th{width:34%;font-weight:600;color:var(--azul-fiordo);text-align:left;}
 .dtable tbody th + td{text-align:right;}
-.dtable__total td{font-family:var(--display);font-weight:700;font-size:1.05rem;border-top:2px solid var(--azul-fiordo);border-bottom:none;color:var(--azul-fiordo);}
-.dtable--grand{margin-top:1rem;}
+.dtable tbody th + td:last-child{text-align:left;white-space:normal;color:var(--ink);}
+/* Fila de total: conclusión en display, sobre una línea firme y un fondo propio */
+.dtable__total th,.dtable__total td{font-family:var(--display);font-weight:700;font-size:1.2rem;
+  color:var(--azul-fiordo);background:rgba(24,59,73,.06);
+  border-top:2px solid var(--azul-fiordo);border-bottom:none;
+  padding-top:1.05rem;padding-bottom:1.05rem;}
+.dtable__total th{color:var(--azul-fiordo);}
+/* Resumen final como tarjeta: es la cifra clave del proyecto, no una fila cualquiera */
+.dtable--grand{margin-top:2rem;border:1px solid rgba(24,59,73,.18);border-radius:var(--r);overflow:hidden;}
+.dtable--grand td{padding:1rem 1.25rem;}
+.dtable--grand .dtable__total td{border-top:none;font-size:1.32rem;}
+.dtable--grand tr:last-child td{border-bottom:none;}
 
-.hub__empty{text-align:center;color:var(--gris-piedra);padding:2rem;}
+.hub__empty{max-width:none;text-align:center;color:var(--gris-piedra);
+  padding:3rem 1rem;font-size:1.05rem;}
 
 /* =================================================================
    ANIMACIONES
@@ -559,4 +660,7 @@ h1,h2,h3,h4{margin:0;font-family:var(--display);font-weight:700;line-height:1.1;
   .scene{min-height:auto;page-break-inside:avoid;}
   .hub{position:static;transform:none;width:100%;box-shadow:none;}
   .hub__panel{display:block!important;}
+  .hub__panel.is-active > *{opacity:1!important;transform:none!important;animation:none!important;}
+  .dtable thead th{position:static!important;color:#000;background:#eee;box-shadow:none;}
+  .dtable--grand{border-color:#999;}
 }
